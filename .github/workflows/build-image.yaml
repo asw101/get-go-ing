@@ -44,7 +44,7 @@ jobs:
           DOCKER_LABELS: ${{ steps.meta.outputs.labels }}
         run: |
          cd $GITHUB_WORKSPACE/
-         export GIT_BRANCH="${GITHUB_REF_NAME_SLUG}"
+         export GIT_BRANCH="${GITHUB_REF##*/}"
          export GITHUB_ACTION_REPOSITORY="${{ github.repository }}"
          bash build-images.sh
          
