@@ -44,5 +44,6 @@ jobs:
           DOCKER_LABELS: ${{ steps.meta.outputs.labels }}
         run: |
          cd $GITHUB_WORKSPACE/
-         source build-images.sh
+         export GITHUB_ACTION_REPOSITORY
+         bash build-images.sh
          
