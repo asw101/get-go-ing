@@ -42,11 +42,9 @@ jobs:
         env:
           DOCKER_TAGS: ${{ steps.meta.outputs.tags }}
           DOCKER_LABELS: ${{ steps.meta.outputs.labels }}
-          GIT_BRANCH: ${{ steps.meta.outputs.branch }}
-          GITHUB_ACTION_REPOSITORY: ${{ github.repository }}
         run: |
          cd $GITHUB_WORKSPACE/
-         export GIT_BRANCH
-         export GITHUB_ACTION_REPOSITORY
+         export GIT_BRANCH="${{ steps.meta.outputs.branch }}"
+         export GITHUB_ACTION_REPOSITORY="${{ github.repository }}"
          bash build-images.sh
          
