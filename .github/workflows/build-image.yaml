@@ -46,5 +46,7 @@ jobs:
           GITHUB_ACTION_REPOSITORY: ${{ github.repository }}
         run: |
          cd $GITHUB_WORKSPACE/
+         export GIT_BRANCH
+         export GITHUB_ACTION_REPOSITORY
          bash build-images.sh
          
