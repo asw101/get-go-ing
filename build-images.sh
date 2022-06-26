@@ -1,7 +1,7 @@
 # echo "DOCKER_LABELS: ${DOCKER_LABELS}"
 
 
-for d in (ls -d */ | sed 's#/##'); do
+for d in $(ls -d */ | sed 's#/##'); do
     echo "$d"
 done
 
