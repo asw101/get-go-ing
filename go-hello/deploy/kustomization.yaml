@@ -1,0 +1,25 @@
+resources:
+- namespace.yaml
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+- serviceaccount.yaml
+- httpscaledobject.yaml
+- service-keda.yaml
+
+commonLabels:
+  app.kubernetes.io/name: hello
+
+namespace: go-hello
+
+patches:
+  - patch: |-
+      apiVersion: http.keda.sh/v1alpha1
+      kind: HTTPScaledObject
+      metadata:
+        name: hello
+      spec:
+        host: hello.0.0.0.0.nip.io
+
+# replace 0.0.0.0 above with the output of
+# kubectl get service -n ingress-nginx ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
