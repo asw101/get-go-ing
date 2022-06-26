@@ -38,11 +38,11 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           
-      - name: run build.sh
+      - name: run build-images.sh
         env:
           DOCKER_TAGS: ${{ steps.meta.outputs.tags }}
           DOCKER_LABELS: ${{ steps.meta.outputs.labels }}
         run: |
          cd $GITHUB_WORKSPACE/
-         bash build-images.sh
+         source build-images.sh
          
