@@ -3,7 +3,7 @@ SOURCE="aca-go/"
 
 docker build \
     -t "$TAG" \
-    --label "$DOCKER_LABELS"
+    --label "$DOCKER_LABELS" \
     "$SOURCE"
 
 docker push "$TAG"
