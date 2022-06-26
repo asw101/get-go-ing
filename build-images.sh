@@ -1,5 +1,4 @@
-# echo "DOCKER_LABELS: ${DOCKER_LABELS}"
-
+echo "DOCKER_LABELS: ${DOCKER_LABELS}"
 
 for d in $(ls -d */ | sed 's#/##'); do
     
