@@ -1,27 +1,27 @@
-# aca-go
+# go-aca
 
 ## docker
 
 ```bash
-export HELLO='aca-go'
+export HELLO='go-aca'
 
-docker build -t aca-go .
+docker build -t go-aca .
 
 docker run --rm \
     --env HELLO \
-    -it aca-go
+    -it go-aca
 ```
 
 ## azure container app
 
 ```bash
-HELLO='aca-go'
+HELLO='go-aca'
 
 az containerapp create \
   --resource-group "my-container-apps" \
   --environment "my-environment" \
-  --name aca-go \
-  --image ghcr.io/asw101/aca-go:latest \
+  --name go-aca \
+  --image ghcr.io/asw101/go-aca:latest \
   --env-vars "HELLO=${HELLO}" \
   --min-replicas 1 \
   --max-replicas 2

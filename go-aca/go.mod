@@ -1,3 +1,3 @@
-module github.com/asw101/aca-go
+module github.com/asw101/go-aca
 
 go 1.18
