@@ -21,7 +21,7 @@ az containerapp create \
   --resource-group "my-container-apps" \
   --environment "my-environment" \
   --name go-aca \
-  --image ghcr.io/asw101/go-aca:latest \
+  --image ghcr.io/asw101/get-go-ing/go-aca:latest \
   --env-vars "HELLO=${HELLO}" \
   --min-replicas 1 \
   --max-replicas 2
