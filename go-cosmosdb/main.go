@@ -24,6 +24,7 @@ func run() error {
 	if endpoint == "" {
 		return errors.New("AZURE_COSMOS_ENDPOINT not set")
 	}
+
 	key := os.Getenv("AZURE_COSMOS_KEY")
 	if key == "" {
 		return errors.New("AZURE_COSMOS_KEY not set")
@@ -41,7 +42,7 @@ func run() error {
 
 	partitionKey := os.Getenv("AZURE_COSMOS_PARTITIONKEY")
 	if partitionKey == "" {
-		partitionKey = "/id"
+		partitionKey = "/pk"
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -98,14 +99,20 @@ func run() error {
 		return err
 	}
 
-	itemID := "1"
-	pk := azcosmos.NewPartitionKeyString(itemID)
-	item := map[string]interface{}{
-		"id":          itemID,
-		"category":    "personal",
-		"name":        "groceries",
-		"description": "Pick up apples and strawberries",
-		"isComplete":  false,
+	item := struct {
+		ID          string `json:"id"`
+		PK          string `json:"pk"`
+		Category    string
+		Name        string
+		Description string
+		IsComplete  bool
+	}{
+		ID:          "1",
+		PK:          "pk1",
+		Category:    "personal",
+		Name:        "groceries",
+		Description: "Pick up apples and strawberries",
+		IsComplete:  false,
 	}
 
 	b, err := json.Marshal(item)
@@ -113,13 +120,14 @@ func run() error {
 		return err
 	}
 
-	createResponse, err := containerClient.CreateItem(ctx, pk, b, nil)
-	if ignoreConflict(err) != nil {
+	pk := azcosmos.NewPartitionKeyString(item.PK)
+	createResponse, err := containerClient.UpsertItem(ctx, pk, b, nil)
+	if err != nil {
 		return err
 	}
-	log.Printf("CreateItem | RequestCharge: %v", createResponse.RequestCharge)
+	log.Printf("UpsertItem | RequestCharge: %v", createResponse.RequestCharge)
 
-	readResponse, err := containerClient.ReadItem(ctx, pk, itemID, nil)
+	readResponse, err := containerClient.ReadItem(ctx, pk, item.ID, nil)
 	if err != nil {
 		return err
 	}
@@ -131,11 +139,16 @@ func run() error {
 		return err
 	}
 
-	for k, v := range result {
-		fmt.Printf("%s: %v\n", k, v)
+	b, err = json.MarshalIndent(result, "", "    ")
+	if err != nil {
+		return err
 	}
+	fmt.Printf("%s\n", b)
 
-	deleteResponse, err := containerClient.DeleteItem(ctx, pk, itemID, nil)
+	// TODO: remove to enable deletion
+	return nil
+
+	deleteResponse, err := containerClient.DeleteItem(ctx, pk, item.ID, nil)
 	if err != nil {
 		return err
 	}
