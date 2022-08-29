@@ -1,0 +1,9 @@
+go 1.19
+
+use (
+	./go-aca
+	./go-blob
+	./go-cosmosdb
+	./go-hello
+	./go-postgres
+)
